@@ -8,7 +8,7 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'], weight:['300','400','500','600','700']
 })
 export const metadata: Metadata = {
-  title: 'Pricewise',
+  title: 'BargainBuddy',
   description: 'Get the cheapest products online',
 }
 
