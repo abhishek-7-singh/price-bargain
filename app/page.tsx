@@ -1,73 +1,61 @@
-"use client"
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import Home from '@/app/page';
-interface LoginProps {}
-
-const LoginPage: React.FC<LoginProps> = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Add your login logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
-    setEmail('');
-    setPassword('');
-    // Redirect to the dashboard or display a success message
-  };
+import HeroCarousel from "@/components/HeroCarousel";
+import Searchbar from "@/components/Searchbar";
+import Image from "next/image";
+import { getAllProducts } from "@/lib/actions";
+import ProductCard from "@/components/ProductCard";
+const Home = async () => {
+  const allProducts = await getAllProducts();
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6">Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border rounded-md px-3 py-2 w-full"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border rounded-md px-3 py-2 w-full"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-primary text-white font-bold py-2 px-4 rounded-md w-full"
-          >
-            Login
-          </button>
-        </form>
-        <div className="flex justify-end mt-4">
-          <Link href="/signup" className="text-primary hover:underline">
-            Sign Up
+    <>
+    {/* <div className="container mx-auto mt-4">
+        <div className="flex justify-end gap-4">
+          <Link href="/app/Login" className="text-primary hover:underline">
+            Login<LoginPage/>
           </Link>
+          <Link href="/app/Signup" className="text-primary hover:underline">
+            Sign Up<SignupPage/>
+          </Link>
+
+
         </div>
-        <div className="flex items-center justify-center mt-6">
-          <Image src="/assets/icons/user.svg" alt="user" width={28} height={28} />
+      </div> */}
+      <section className="px-6 md:px-20 py-24">
+        <div className="flex max-xl:flex-col gap-16">
+          <div className="flex flex-col justify-center">
+            <p className="small-text">
+              Your daily shopping driver:{" "}
+              <Image
+                src="/assets/icons/arrow-right.svg"
+                alt="arrow-right"
+                width={16}
+                height={16}
+              />
+            </p>
+            <h1 className="head-text">
+              Unleash the power of{" "}
+              <span className="text-primary">Web Scrappers</span>
+            </h1>
+            <p className="mt-6">
+              Powerful, self service product and growth analytics, helps you shop
+              cheaper and better.
+            </p>
+            <Searchbar />
+          </div>
+          <HeroCarousel />
         </div>
-      </div>
-    </div>
+      </section>
+      <section className="trending-section">
+        <h2 className="section-text">Trending</h2>
+        <div className="flex flex-wrap gap-x-8 gap-y-16">
+          {allProducts?.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
+        </div>
+      </section>
+      
+    </>
   );
 };
 
-export default LoginPage;
+export default Home;
