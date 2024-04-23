@@ -1,19 +1,15 @@
-
-
 import HeroCarousel from "@/components/HeroCarousel";
 import Searchbar from "@/components/Searchbar";
-import Image from "next/image";
 import { getAllProducts } from "@/lib/actions";
 import ProductCard from "@/components/ProductCard";
-import Link from "next/link";
-import LoginPage from "@/app/Login";
-import SignupPage from "@/app/Login";
+import Image from 'next/image'; // Updated import
+
 const Home = async () => {
   const allProducts = await getAllProducts();
 
   return (
     <>
-    {/* <div className="container mx-auto mt-4">
+      {/* <div className="container mx-auto mt-4">
         <div className="flex justify-end gap-4">
           <Link href="/app/Login" className="text-primary hover:underline">
             Login<LoginPage/>
@@ -21,8 +17,6 @@ const Home = async () => {
           <Link href="/app/Signup" className="text-primary hover:underline">
             Sign Up<SignupPage/>
           </Link>
-
-
         </div>
       </div> */}
       <section className="px-6 md:px-20 py-24">
@@ -58,7 +52,6 @@ const Home = async () => {
           ))}
         </div>
       </section>
-      
     </>
   );
 };

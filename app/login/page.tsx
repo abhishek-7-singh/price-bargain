@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; // Corrected import
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
@@ -17,11 +17,11 @@ const LoginPage: React.FC<LoginProps> = () => {
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  const onLogin = async () => {
+  const onLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const response = await axios.post("/api/users/login", user);
-      console.log("My response is response");
       console.log("Login success", response.data);
       toast.success("Login success");
       router.push("/");
@@ -34,11 +34,7 @@ const LoginPage: React.FC<LoginProps> = () => {
   };
 
   useEffect(() => {
-    if (user.email.length > 0 && user.password.length > 0) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
+    setButtonDisabled(!(user.email.length > 0 && user.password.length > 0));
   }, [user]);
 
   return (
@@ -47,10 +43,9 @@ const LoginPage: React.FC<LoginProps> = () => {
         <h1 className="head-text text-primary font-bold text-center mb-0">
           Log<span className="text-primary mb-4">in</span>
         </h1>
-        <h1 >{loading ? "Processing" : ""}</h1>
         <div className="items-center">
           <Image
-            src="assets/icons/hand-drawn-arrow.svg"
+            src="/assets/icons/hand-drawn-arrow.svg"
             alt="arrow"
             width={150}
             height={175}
@@ -68,6 +63,7 @@ const LoginPage: React.FC<LoginProps> = () => {
             <input
               type="email"
               id="email"
+              placeholder="Email"
               value={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -84,6 +80,7 @@ const LoginPage: React.FC<LoginProps> = () => {
             <input
               type="password"
               id="password"
+              placeholder="Password"
               value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -91,24 +88,33 @@ const LoginPage: React.FC<LoginProps> = () => {
             />
           </div>
           <div className="flex items-center justify-between mb-4">
+            {/* <a
+              href="#"
+              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-700"
+              >
+              Forgot Password?
+            </a> */}
+            <div>
+              <span className="bg-white-500 text-gray-700 font-bold  rounded  focus:shadow-outline">New User,</span>
+              <Link href="/signup" passHref>
+                <span className="bg-white-500 hover:text-red-700 text-gray-700 font-bold py-2 px-1 rounded focus:outline-none focus:shadow-outline">
+                  Register
+                </span>
+              </Link>
+            </div>
             <button
               type="submit"
               className="bg-white-500 hover:text-red-700 text-gray-700 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              disabled={buttonDisabled}
             >
-              {loading? "processing": "Login"}
+              {loading ? "Processing" : "Submit"}
             </button>
-            <a
-              href="#"
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-700"
-            >
-              Forgot Password?
-            </a>
           </div>
-          <div className="btn flex justify-end mt-4">
-            <Link href="/signup" className="text-primary hover:underline">
+          {/* <div className="btn flex justify-end mt-4">
+            <Link href="/signup" passHref>
               Sign Up
             </Link>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

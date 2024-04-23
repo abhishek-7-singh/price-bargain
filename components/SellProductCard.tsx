@@ -10,12 +10,12 @@ interface Props{
 
 
 const ProductCard = ({ product }:Props) => {
-  console.log("selling"+ product.image);
+  //console.log("selling"+ product.imageUrl);
     return (
-    <Link href={`/products/${product._id}`} className="product-card">
+    <Link href={`/sell/${product._id}`} className="product-card">
         <div className = "product-card_img-container">
             <Image
-            src={product.image}
+            src={product.imageUrl}
             alt={product.title}
             width = {200}
             height = {200}

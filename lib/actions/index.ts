@@ -5,6 +5,7 @@ import Product from "../models/product.model";
 import { connectToDB } from "../mongoose";
 import { scrapeAmazonProduct } from "../scraper";
 import { getAveragePrice, getLowestPrice } from "../utils";
+import SellProduct from "@/lib/models/sellproduct.model";
 import { User } from "@/types";
 import { generateEmailBody, sendEmail } from "../nodemailer";
 
@@ -63,6 +64,16 @@ export async function getAllProducts() {
     connectToDB();
     const products = await Product.find();
     return products;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getAllSellerProducts() {
+  try {
+    connectToDB();
+    const sellproduct = await SellProduct.find();
+    return sellproduct;
   } catch (error) {
     console.log(error);
   }
